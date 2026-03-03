@@ -1,3 +1,13 @@
+-- ===========================================
+-- SQL PRACTICE - CHINOOK DATABASE
+-- Author: Saifallah
+-- Started: February 2026
+-- ===========================================
+
+-- ===========================================
+-- SECTION 1: BASIC SELECT, WHERE, ORDER BY
+-- ===========================================
+
 -- 1. View all customers
 select * 
 FROM Customer;
@@ -54,3 +64,41 @@ LIMIT 10;
 
 -- 11. Double-check date range
 SELECT MIN(InvoiceDate), MAX(InvoiceDate) FROM Invoice;
+
+-- ===========================================
+-- SECTION 2: GROUP BY + COUNT + SUM
+-- ===========================================
+-- 12. Customers per country
+SELECT country, COUNT(*) as customer_count
+FROM Customer
+GROUP BY country
+ORDER BY customer_count DESC;
+
+-- 13. Total sales per customer (top 10)
+SELECT CustomerId, SUM(Total) as total_spent
+FROM Invoice
+GROUP BY CustomerId
+ORDER BY total_spent DESC
+LIMIT 10;
+
+-- 14. Customers who spent > $40
+SELECT CustomerId, SUM(Total) as total_spent
+FROM Invoice
+GROUP BY CustomerId
+HAVING SUM(Total) > 40
+ORDER BY total_spent DESC;
+
+-- 14. Tracks per composer (starting with B)
+SELECT Composer, COUNT(*) as track_count
+FROM Track
+WHERE Composer LIKE 'B%' AND Composer IS NOT NULL
+GROUP BY Composer
+ORDER BY track_count DESC;
+
+-- 10. Top 5 countries by sales
+SELECT BillingCountry, SUM(Total) as total_sales
+FROM invoice
+GROUP BY BillingCountry
+ORDER BY total_sales DESC
+LIMIT 5;
+
