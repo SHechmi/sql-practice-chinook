@@ -102,3 +102,36 @@ GROUP BY BillingCountry
 ORDER BY total_sales DESC
 LIMIT 5;
 
+-- ===========================================
+-- SECTION 3: JOINS
+-- ===========================================
+
+--14. Customer name + total spent (JOIN + GROUP BY)
+SELECT t1.FirstName, t1.LastName, SUM(t2.Total) AS total_spent
+FROM Customer t1
+JOIN Invoice t2 ON t1.CustomerId = t2.CustomerId
+GROUP BY t1.CustomerId
+ORDER BY total_spent DESC;
+
+-- 15. Track name + album title + artist name (3-table JOIN)
+SELECT t1.Name as TRACK_NAME, t2.Title as ALBUM_Title, t3.Name as ARTIST_NAME
+FROM Track t1
+JOIN Album t2 ON t1.AlbumId=t2.AlbumId
+JOIN Artist t3 ON t2.ArtistId=t3.ArtistId;
+
+-- 16. Artists with more than 10 tracks (JOIN + GROUP BY + HAVING)
+SELECT t1.Name as Artist_Name, count(t2.TrackId) as track_count
+FROM Artist t1
+JOIN Album t3 ON t1.ArtistId=t3.ArtistId
+JOIN Track t2 ON t2.AlbumId=t3.AlbumId
+GROUP BY t1.ArtistId
+HAVING track_count > 10
+ORDER BY track_count DESC;
+
+-- 17. All artists with their album count, including artists with zero albums (LEFT JOIN)
+SELECT t1.Name as Artist_Name, count(t2.AlbumId) as album_count
+FROM Artist t1
+LEFT JOIN Album t2 ON t1.ArtistId=t2.ArtistId
+GROUP BY t1.ArtistId
+ORDER BY Album_count DESC;
+
